@@ -1,0 +1,3 @@
+Arya,1234567890123456,Palembang,Indonesia,Laki-laki,085156357446
+Fauzi,1234567890123456,Bojongsoang,Indonesia,Laki-laki,081312345667
+Jehua,1234567890123456,Palembang,Jepang,Laki-laki,081212345667
