@@ -222,11 +222,14 @@ public class PopupTambahEditKamar extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void Button_Tambah_kamarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Button_Tambah_kamarActionPerformed
-        String inNomorKamar = Field_Nomor_Kamar.getText();
+        String cekNomorKamar = Field_Nomor_Kamar.getText();
         String cekRatings = Field_Rating.getText();
-        if(inNomorKamar.equals("") || cekRatings.equals("")){ //Jika field masing kososng 
-            Label_Validation.setText("<html><font color=red>Inputkan semua data dahulu</font></html>");  
+        if(cekNomorKamar.equals("") || cekRatings.equals("")){ //Jika field masing kososng 
+            Label_Validation.setText("<html><font color=red>Inputkan semua data dahulu</font></html>");
+        } else if(cekRatings.length()>3 | (Integer.parseInt(cekRatings))>100) { //jika rating lebih dari 100
+            Label_Validation.setText("<html><font color=red>Inputkan nilai rating antara 0~100</font></html>");   
         } else {
+            String inNomorKamar = Field_Nomor_Kamar.getText();
             String cekTipeKamar = (String) CBox_Tipe_Kamar.getSelectedItem();
             String cekStatusWifi = (String) CBox_Status_Wifi.getSelectedItem();
             String cekStatusKamar = (String) CBox_Status_Kamar.getSelectedItem();
@@ -254,11 +257,7 @@ public class PopupTambahEditKamar extends javax.swing.JDialog {
             }
             //Buat Kamar
             kamarKontrol.updateListKamar(idxRow, inNomorKamar, inTipeKamar, inStatusWifi, inStatusKamar, inRating);
-            /*
-            //Update Kamar
-            int locKamarUpdate = kamarKontrol.getLocFromKamar(kamar);
-            kamarKontrol.updateStatusKamar(locKamarUpdate, true);
-            */
+           
             //update database
             try {
                 database.simpanDatabase();
