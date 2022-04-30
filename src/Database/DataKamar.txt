@@ -1,4 +1,4 @@
-11,true,false,false,98
+11,true,false,true,98
 12,true,false,true,91
 13,true,true,true,90
 14,true,true,false,97
@@ -7,7 +7,7 @@
 17,false,true,true,95
 18,false,true,true,94
 21,true,false,true,100
-22,true,false,false,88
+22,true,false,true,88
 23,true,true,true,90
 24,true,true,true,90
 25,false,false,false,77
