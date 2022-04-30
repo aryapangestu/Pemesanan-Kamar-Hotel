@@ -16,11 +16,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- *
- * @author aryap
- */
-public class TamuKontrol {
+public class TamuKontrol extends Kontrol{
     private List<Tamu> daftarTamu;   
 
     public TamuKontrol() {
@@ -41,10 +37,12 @@ public class TamuKontrol {
         }
     }
 
+    @Override
     public int sizeData(){
         return daftarTamu.size();
     }
     
+    @Override
     public Object[] oneRow(int idx){
         Object[] row = {(idx+1),
                     daftarTamu.get(idx).getNamaTamu(),
@@ -56,8 +54,9 @@ public class TamuKontrol {
                             
         return row;
     }
-
-    public Tamu getTamuFromLoc(int locTamu){
+    
+    //START Kebutuhan Pemesanan
+    public Tamu getTamu(int locTamu){
         if(locTamu != -1){
             return daftarTamu.get(locTamu);
         }else{
@@ -65,7 +64,7 @@ public class TamuKontrol {
         }
     }
     
-    public int getLocFromTamu(Tamu tamu){
+    public int getLoc(Tamu tamu){
         int idx = -1;
         for (int i = 0; i < daftarTamu.size(); i++) {
             if(daftarTamu.get(i).equals(tamu)){
@@ -75,7 +74,7 @@ public class TamuKontrol {
         return idx;
     }
     
-    public int cariNamaKontakTamu(String namaKontakTamu){
+    public int cariTamu(String namaKontakTamu){
         int idx = -1;
         for (int i = 0; i < daftarTamu.size(); i++) {
             if(daftarTamu.get(i).getNamaTamu().equals(namaKontakTamu)){
@@ -87,17 +86,7 @@ public class TamuKontrol {
         }
         return idx;
     }
-    
-    public int cariNamaTamu(String namaTamu){
-        int idx = -1;
-        for (int i = 0; i < daftarTamu.size(); i++) {
-            if(daftarTamu.get(i).getNamaTamu().equals(namaTamu)){
-                idx = i;
-            }
-        }
-        return idx;
-    }
-  
+    //END Kebutuhan Pemesanan
     public void setTxt() throws FileNotFoundException, UnsupportedEncodingException{
         PrintWriter data = new PrintWriter("..\\Pemesanan_Kamar_Hotel\\src\\Database\\DataTamu.txt", "UTF-8");
         for (int i = 0; i < daftarTamu.size(); i++) {

@@ -24,11 +24,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
 
-/**
- *
- * @author aryap
- */
-public class PemesananKontrol {
+public class PemesananKontrol extends Kontrol{
     private List<Pemesanan> daftarPemesanan;
 
     public PemesananKontrol(){
@@ -55,10 +51,12 @@ public class PemesananKontrol {
         
     }
     
+    @Override
     public int sizeData(){
         return daftarPemesanan.size();
     }
     
+    @Override
     public Object[] oneRow(int idx){
         //pembayaran true = cash, false = kartu kredit
         String pembayaran;
@@ -130,9 +128,9 @@ public class PemesananKontrol {
                             daftarPemesanan.get(i).isPembayaran() + "," +
                             daftarPemesanan.get(i).getWaktuCheckIn() + "," +
                             daftarPemesanan.get(i).getWaktuCheckOut() + "," +
-                            kamarKontrol.getLocFromKamar(daftarPemesanan.get(i).getKamar()) + "," +
+                            kamarKontrol.getLoc(daftarPemesanan.get(i).getKamar()) + "," +
                             daftarPemesanan.get(i).getHarga() + "," +
-                            tamuKontrol.getLocFromTamu(daftarPemesanan.get(i).getTamu()) + ",");
+                            tamuKontrol.getLoc(daftarPemesanan.get(i).getTamu()) + ",");
         }
             data.close();
     }
@@ -151,7 +149,7 @@ public class PemesananKontrol {
                                                 LocalDate.parse(description[3], formatter), 
                                                 kamarKontrol.getKamar(Integer.valueOf(description[4])),
                                                 Integer.valueOf(description[5]), 
-                                                tamuKontrol.getTamuFromLoc(Integer.valueOf(description[6])));
+                                                tamuKontrol.getTamu(Integer.valueOf(description[6])));
             this.daftarPemesanan.add(pemesanan);
         }
     }

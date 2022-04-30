@@ -5,9 +5,10 @@
  */
 package PopupMenu;
 
-import Database.DriverDatabase;
+import Database.Database;
 import Entitas.Tamu;
 import Kontrol.TamuKontrol;
+import java.awt.Color;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -15,21 +16,21 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
-public class PopupTambahEditTamu extends javax.swing.JDialog {
-    private DriverDatabase database;
+public class PopupTambahEditTamu extends javax.swing.JDialog implements PopupMenu{
+    private Database database;
     
     private TamuKontrol tamuKontrol;
     
     private int idxRow;
     
-    private void loadDatabase() throws IOException{
-        database = new DriverDatabase();
+    public void loadDatabase() throws IOException{
+        database = new Database();
         database.memuatDatabase();
         
         tamuKontrol = database.getTamuKontrol();
     }
     
-    private void setFieldEdit(){
+    public void setFieldEdit(){
        Tamu tamuidx = tamuKontrol.listTamu().get(idxRow);
        
        
@@ -97,6 +98,11 @@ public class PopupTambahEditTamu extends javax.swing.JDialog {
 
         jLabel1.setText("Nama");
 
+        Field_Nama.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                Field_NamaMouseClicked(evt);
+            }
+        });
         Field_Nama.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 Field_NamaKeyTyped(evt);
@@ -105,9 +111,9 @@ public class PopupTambahEditTamu extends javax.swing.JDialog {
 
         jLabel2.setText("Nomor kartu kredit");
 
-        Field_KartuKredit.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                Field_KartuKreditActionPerformed(evt);
+        Field_KartuKredit.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                Field_KartuKreditMouseClicked(evt);
             }
         });
         Field_KartuKredit.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -118,6 +124,12 @@ public class PopupTambahEditTamu extends javax.swing.JDialog {
 
         jLabel3.setText("Alamat");
 
+        Field_Alamat.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                Field_AlamatMouseClicked(evt);
+            }
+        });
+
         jLabel4.setText("Negara");
 
         jLabel5.setText("Jenis kelamin");
@@ -126,9 +138,9 @@ public class PopupTambahEditTamu extends javax.swing.JDialog {
 
         jLabel6.setText("Nomor telepon");
 
-        TextField_NoTlp.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                TextField_NoTlpActionPerformed(evt);
+        TextField_NoTlp.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                TextField_NoTlpMouseClicked(evt);
             }
         });
         TextField_NoTlp.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -209,14 +221,6 @@ public class PopupTambahEditTamu extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void TextField_NoTlpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TextField_NoTlpActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_TextField_NoTlpActionPerformed
-
-    private void Field_KartuKreditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Field_KartuKreditActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_Field_KartuKreditActionPerformed
-
     private void Button_TambahTamuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Button_TambahTamuActionPerformed
         String inAlamat = Field_Alamat.getText();
         String inNomorKartuKredit = Field_KartuKredit.getText();
@@ -224,30 +228,39 @@ public class PopupTambahEditTamu extends javax.swing.JDialog {
         String inKontak = TextField_NoTlp.getText();
         String inNegara = (String) ComboBox_Negara.getSelectedItem();
         String inGender = (String) ComboBox_Gender.getSelectedItem();
-        int val = tamuKontrol.cariNamaTamu(inNamaTamu);
-        if(val != -1){    
-            JOptionPane.showMessageDialog(this, "Nama sudah digunakan","ERROR", JOptionPane.ERROR_MESSAGE);
-            Field_Nama.setText("Harap ganti nama");
-                
+        int val = tamuKontrol.cariTamu(inNamaTamu);
+        if(inNamaTamu.equals("")){
+            Field_Nama.setForeground (Color.red);
+            Field_Nama.setText("Nama tidak boleh kosong"); 
+        }else{
+            if(val != -1 && idxRow == -1){    
+                Field_Nama.setForeground (Color.red);
+                Field_Nama.setText("Harap ganti nama");   
+            }
+        }
+        if(inAlamat.equals("")){
+            Field_Alamat.setForeground (Color.red);
+            Field_Alamat.setText("Harap ganti nama");
         }
         if(inKontak.length()!=12){
             getToolkit().beep();
             setVisible(true);
-            JOptionPane.showMessageDialog(this, "masukkan data yang valid","ERROR", JOptionPane.ERROR_MESSAGE);
+            TextField_NoTlp.setForeground (Color.red);
             TextField_NoTlp.setText("Agar valid, isi 12 digit");
             
         }
         if(inNomorKartuKredit.length() != 16){
             getToolkit().beep();
             setVisible(true);
-            JOptionPane.showMessageDialog(this, "masukkan data yang valid","ERROR", JOptionPane.ERROR_MESSAGE);
+            Field_KartuKredit.setForeground (Color.red);
             Field_KartuKredit.setText("Agar valid, isi 16 digit");
             
         }
-        if(val == -1 && inKontak.length()==12 && inNomorKartuKredit.length() == 16) {
+        if((val == -1 || idxRow != -1) && inKontak.length()==12 && inNomorKartuKredit.length() == 16 && !Field_Alamat.equals("")) {
             tamuKontrol.updateListTamu(idxRow,inNamaTamu, inNomorKartuKredit, inAlamat, inNegara, inGender, inKontak);
             dispose();
-
+        }else{
+            JOptionPane.showMessageDialog(this, "masukkan data yang valid","ERROR", JOptionPane.ERROR_MESSAGE);
         }
 
         try {
@@ -261,6 +274,7 @@ public class PopupTambahEditTamu extends javax.swing.JDialog {
     }//GEN-LAST:event_Button_TambahTamuActionPerformed
 
     private void Field_NamaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_Field_NamaKeyTyped
+        Field_Nama.setForeground (Color.BLACK);
         char s=evt.getKeyChar();
         if(Character.isDigit(s)){
             getToolkit().beep();
@@ -269,6 +283,7 @@ public class PopupTambahEditTamu extends javax.swing.JDialog {
     }//GEN-LAST:event_Field_NamaKeyTyped
 
     private void Field_KartuKreditKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_Field_KartuKreditKeyTyped
+        Field_KartuKredit.setForeground (Color.BLACK);
         char s=evt.getKeyChar();
         if(!Character.isDigit(s)){
             getToolkit().beep();
@@ -277,12 +292,29 @@ public class PopupTambahEditTamu extends javax.swing.JDialog {
     }//GEN-LAST:event_Field_KartuKreditKeyTyped
 
     private void TextField_NoTlpKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TextField_NoTlpKeyTyped
+        TextField_NoTlp.setForeground (Color.BLACK);
         char s=evt.getKeyChar();
         if(!Character.isDigit(s)){
             getToolkit().beep();
             evt.consume();
         }
     }//GEN-LAST:event_TextField_NoTlpKeyTyped
+
+    private void Field_NamaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Field_NamaMouseClicked
+        Field_Nama.setForeground (Color.BLACK);
+    }//GEN-LAST:event_Field_NamaMouseClicked
+
+    private void Field_KartuKreditMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Field_KartuKreditMouseClicked
+        Field_KartuKredit.setForeground (Color.BLACK);
+    }//GEN-LAST:event_Field_KartuKreditMouseClicked
+
+    private void TextField_NoTlpMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TextField_NoTlpMouseClicked
+        TextField_NoTlp.setForeground (Color.BLACK);
+    }//GEN-LAST:event_TextField_NoTlpMouseClicked
+
+    private void Field_AlamatMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Field_AlamatMouseClicked
+        Field_Alamat.setForeground (Color.BLACK);
+    }//GEN-LAST:event_Field_AlamatMouseClicked
 
     /**
      * @param args the command line arguments

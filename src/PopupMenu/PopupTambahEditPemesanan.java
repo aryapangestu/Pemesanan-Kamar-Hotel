@@ -5,7 +5,7 @@
  */
 package PopupMenu;
 
-import Database.DriverDatabase;
+import Database.Database;
 import Entitas.Kamar;
 import Entitas.Pemesanan;
 import Entitas.Tamu;
@@ -20,21 +20,15 @@ import java.text.DateFormat;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
-import javax.swing.ListModel;
 
-/**
- *
- * @author aryap
- */
-public class PopupTambahEditPemesanan extends javax.swing.JDialog {
+public class PopupTambahEditPemesanan extends javax.swing.JDialog implements PopupMenu{
     //Variable Global
-    private DriverDatabase database;
+    private Database database;
     
     private TamuKontrol tamuKontrol;
     private KamarKontrol kamarKontrol;
@@ -48,8 +42,8 @@ public class PopupTambahEditPemesanan extends javax.swing.JDialog {
     private int idxRow;
     
     //Prosedur load 3 databse
-    private void loadDatabase() throws IOException{
-        database = new DriverDatabase();
+    public void loadDatabase() throws IOException{
+        database = new Database();
         database.memuatDatabase();
         
         tamuKontrol = database.getTamuKontrol();
@@ -74,11 +68,11 @@ public class PopupTambahEditPemesanan extends javax.swing.JDialog {
         DatePicker_CheckOut.setFormats(new String[]{"dd MMMM yyyy"});
     }
     
-    private void setFieldEdit(){
+    public void setFieldEdit(){
         Pemesanan pemesanan = pemesananKontrol.listPemesanan().get(idxRow);
             
         //update status menjadi terisi
-        int locPemesananUpdate = kamarKontrol.getLocFromKamar(pemesanan.getKamar());
+        int locPemesananUpdate = kamarKontrol.getLoc(pemesanan.getKamar());
         kamarKontrol.updateStatusKamar(locPemesananUpdate, false);
         
         //Isi field nama
@@ -350,16 +344,6 @@ public class PopupTambahEditPemesanan extends javax.swing.JDialog {
                 DatePicker_CheckOutPopupMenuWillBecomeVisible(evt);
             }
         });
-        DatePicker_CheckOut.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                DatePicker_CheckOutMouseClicked(evt);
-            }
-        });
-        DatePicker_CheckOut.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                DatePicker_CheckOutActionPerformed(evt);
-            }
-        });
 
         Button_HitungHarga.setText("Hitung harga");
         Button_HitungHarga.addActionListener(new java.awt.event.ActionListener() {
@@ -470,7 +454,7 @@ public class PopupTambahEditPemesanan extends javax.swing.JDialog {
 
     private void Button_CariTamuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Button_CariTamuActionPerformed
         String namaKontakTamu = Field_CariNamaNO.getText();
-        int locTamu = tamuKontrol.cariNamaKontakTamu(namaKontakTamu);
+        int locTamu = tamuKontrol.cariTamu(namaKontakTamu);
         
         //JIka tidak ketemu -1
         if(locTamu == -1){
@@ -523,10 +507,6 @@ public class PopupTambahEditPemesanan extends javax.swing.JDialog {
         String uangString = NumberFormat.getCurrencyInstance(new Locale("id", "ID")).format(hargaKamar);
         Label_HargaPerMalam.setText(": " + uangString + "/malam");
     }//GEN-LAST:event_List_KamarKosongMouseClicked
-
-    private void DatePicker_CheckOutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DatePicker_CheckOutActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_DatePicker_CheckOutActionPerformed
 
     private void Button_HitungHargaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Button_HitungHargaActionPerformed
         //harus jalan kamar dan waktu terisi
@@ -621,7 +601,7 @@ public class PopupTambahEditPemesanan extends javax.swing.JDialog {
             pemesananKontrol.updateListPemesanan(idxRow, tamu, pembayaran, checkIn, checkOut, kamar, HargaKamar);
             
             //update status menjadi terisi
-            int locPemesananUpdate = kamarKontrol.getLocFromKamar(kamar);
+            int locPemesananUpdate = kamarKontrol.getLoc(kamar);
             kamarKontrol.updateStatusKamar(locPemesananUpdate, true);
             
             //Update database
@@ -637,10 +617,6 @@ public class PopupTambahEditPemesanan extends javax.swing.JDialog {
             dispose();
         }
     }//GEN-LAST:event_Button_PesanKamarActionPerformed
-
-    private void DatePicker_CheckOutMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_DatePicker_CheckOutMouseClicked
-
-    }//GEN-LAST:event_DatePicker_CheckOutMouseClicked
 
     private void DatePicker_CheckOutPopupMenuWillBecomeVisible(javax.swing.event.PopupMenuEvent evt) {//GEN-FIRST:event_DatePicker_CheckOutPopupMenuWillBecomeVisible
         //jika checkIn terisi

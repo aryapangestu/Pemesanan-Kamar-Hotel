@@ -16,11 +16,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- *
- * @author aryap
- */
-public class KamarKontrol {
+public class KamarKontrol extends Kontrol{
     private List<Kamar> daftarKamar;
 
     public KamarKontrol() {
@@ -41,10 +37,12 @@ public class KamarKontrol {
         }
     }
     
+    @Override
     public int sizeData(){
         return daftarKamar.size();
     }
     
+    @Override
     public Object[] oneRow(int idx){
         //tipeKamar true = single, false = double
         //statusWifi true = ada, false = tidak ada
@@ -80,6 +78,7 @@ public class KamarKontrol {
         daftarKamar.get(idx).setStatusKamar(statusKamar);
     }
     
+    // START polimorfisme statis overloading
     public Kamar getKamar(String nomorKamar){
         int idx = -1;
         for (int i = 0; i < daftarKamar.size(); i++) {
@@ -97,8 +96,9 @@ public class KamarKontrol {
             return null;
         }
     }
+    // END polimorfisme statis overloading
     
-    public int getLocFromKamar(Kamar kamar){
+    public int getLoc(Kamar kamar){
         int idx = -1;
         for (int i = 0; i < daftarKamar.size(); i++) {
             if(daftarKamar.get(i).equals(kamar)){

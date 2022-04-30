@@ -5,10 +5,6 @@
  */
 package MainMenu;
 
-/**
- *
- * @author aryap
- */
 public class Login extends javax.swing.JFrame {
     private String username;
     private String password;
@@ -49,21 +45,11 @@ public class Login extends javax.swing.JFrame {
         Label_Username.setText("Username");
 
         Field_Username.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        Field_Username.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                Field_UsernameActionPerformed(evt);
-            }
-        });
 
         Label_Password.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         Label_Password.setText("Password");
 
         Field_Password.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        Field_Password.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                Field_PasswordActionPerformed(evt);
-            }
-        });
 
         Label_LoginGagal.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         Label_LoginGagal.setForeground(new java.awt.Color(255, 51, 51));
@@ -121,10 +107,6 @@ public class Login extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void Field_UsernameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Field_UsernameActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_Field_UsernameActionPerformed
-
     private void Button_LoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Button_LoginActionPerformed
         username = "admin";
         password = "admin";
@@ -141,10 +123,6 @@ public class Login extends javax.swing.JFrame {
             Label_LoginGagal.setText("Login gagal");
         }
     }//GEN-LAST:event_Button_LoginActionPerformed
-
-    private void Field_PasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Field_PasswordActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_Field_PasswordActionPerformed
 
     /**
      * @param args the command line arguments

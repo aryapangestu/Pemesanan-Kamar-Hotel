@@ -8,10 +8,6 @@ package Entitas;
 import java.time.LocalDate;
 import java.util.UUID;
 
-/**
- *
- * @author aryap
- */
 public class Pemesanan {
     private UUID kodePemesanan;
     private boolean pembayaran;

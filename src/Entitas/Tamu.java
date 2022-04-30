@@ -5,10 +5,6 @@
  */
 package Entitas;
 
-/**
- *
- * @author aryap
- */
 public class Tamu {
     private String namaTamu;
     private String nomorKartuKredit;

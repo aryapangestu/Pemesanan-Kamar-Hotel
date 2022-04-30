@@ -5,10 +5,6 @@
  */
 package Entitas;
 
-/**
- *
- * @author aryap
- */
 public class Kamar {
     private boolean tipeKamar;
     private String nomorKamar; 

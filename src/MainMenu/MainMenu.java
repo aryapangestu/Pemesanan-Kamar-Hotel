@@ -5,10 +5,10 @@
  */
 package MainMenu;
 
-/**
- *
- * @author aryap
- */
+import DaftarMenu.KamarMenu;
+import DaftarMenu.PemesananMenu;
+import DaftarMenu.TamuMenu;
+
 public class MainMenu extends javax.swing.JFrame {
 
     /**

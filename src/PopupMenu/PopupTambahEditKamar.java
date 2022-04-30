@@ -5,7 +5,7 @@
  */
 package PopupMenu;
 
-import Database.DriverDatabase;
+import Database.Database;
 import Entitas.Kamar;
 import Kontrol.KamarKontrol;
 import java.io.FileNotFoundException;
@@ -14,21 +14,21 @@ import java.io.UnsupportedEncodingException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class PopupTambahEditKamar extends javax.swing.JDialog {
-    private DriverDatabase database;
+public class PopupTambahEditKamar extends javax.swing.JDialog implements PopupMenu{
+    private Database database;
     
     private KamarKontrol kamarKontrol;
     
     private int idxRow;
     
-    private void loadDatabase() throws IOException{
-        database = new DriverDatabase();
+    public void loadDatabase() throws IOException{
+        database = new Database();
         database.memuatDatabase();
         
         kamarKontrol = database.getKamarKontrol();
     }
     
-    private void setFieldEdit(){
+    public void setFieldEdit(){
         Kamar kamarIdx = kamarKontrol.listKamar().get(idxRow);
         
         //isi field no kamar
@@ -48,10 +48,10 @@ public class PopupTambahEditKamar extends javax.swing.JDialog {
         //isi combobox status wifi
         Object obj_statusWifi;
         if(kamarIdx.isStatusWifi() == true){
-            String s = "Ada";  
+            String s = "Ada Wi-Fi";  
             obj_statusWifi = s;
         }else{
-            String s = "Tidak Ada";  
+            String s = "Tidak ada Wi-Fi";  
             obj_statusWifi = s;
         }
         CBox_Status_Wifi.setSelectedItem(obj_statusWifi);
@@ -146,18 +146,11 @@ public class PopupTambahEditKamar extends javax.swing.JDialog {
 
         Label_Nomor_Kamar.setText("Nomor kamar");
 
-        Field_Nomor_Kamar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                Field_Nomor_KamarActionPerformed(evt);
-            }
-        });
         Field_Nomor_Kamar.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 Field_Nomor_KamarKeyTyped(evt);
             }
         });
-
-        Label_Validation.setText("jLabel5");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -213,7 +206,7 @@ public class PopupTambahEditKamar extends javax.swing.JDialog {
                 .addComponent(Field_Rating, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(Label_Validation)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 61, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 77, Short.MAX_VALUE)
                 .addComponent(Button_Tambah_kamar)
                 .addContainerGap())
         );
@@ -257,7 +250,7 @@ public class PopupTambahEditKamar extends javax.swing.JDialog {
             }
             //Buat Kamar
             kamarKontrol.updateListKamar(idxRow, inNomorKamar, inTipeKamar, inStatusWifi, inStatusKamar, inRating);
-           
+
             //update database
             try {
                 database.simpanDatabase();
@@ -286,10 +279,6 @@ public class PopupTambahEditKamar extends javax.swing.JDialog {
             evt.consume();
         }
     }//GEN-LAST:event_Field_RatingKeyTyped
-
-    private void Field_Nomor_KamarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Field_Nomor_KamarActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_Field_Nomor_KamarActionPerformed
 
     /**
      * @param args the command line arguments
